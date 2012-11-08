@@ -238,6 +238,10 @@ Aside from SQL, you can also call stored procedures and System procedures using 
     
 System procedures are built-in procedures that provide information about the configuration and operating conditions of a VoltDB cluster.  [Appendix G](http://community.voltdb.com/docs/UsingVoltDB/AppSysProc) of Using VoltDB provides a reference for all of the available System procedures.
 
+You can exit the SQLCMD interface using the exit command:
+
+    exit
+
 Another way of using SQLCMD is in a script.  SQLCMD can execute commands passed in from STDIN non-interactively.  Exit SQLCMD and try the following example:
 
     exit
@@ -256,10 +260,12 @@ On the left side of the screen, you can browse the database schema.
 On the right side, you should see a query window labeled "SQLQuery1.sql".  Type the following query in the window, and then click on the red exclamation point button on the toolbar to execute the query.
 
     select * from contestants;
+
+    
+You should see the results of the query.  You can also open new SQL query windows using the "New Query" toolbar button.  Try that, and this time run the following stored procedure call:
+
     exec Results;
     
-You should see the results of the query.  You can also open new SQL query windows using the "New Query" toolbar button.
-
 Another tool in VoltDB Studio is the Performance Monitor.  Click on the "Open Performance Monitor" toolbar button.  You should see a new tab on the page with running charts that show Latency and Transactions/s.  These are real-time statistics you can monitor to see the current activity in the database.  Thereare pull-down selectors you can use to change each graph to show Memory in GB, or Partition Starvation (a visualization of the distribution of work within the database).
 
 Below the charts on the Performance Monitor is a summary statistics table that shows the number of calls to each of the stored procedures that has been invoked in the database, and the min, avg and max execution times in milliseconds.  
@@ -280,7 +286,6 @@ The voltdb command uses the following structure:
 
     voltdb [create|recover|start] catalog [catalog file] deployment [deployment file] \
         license [license file] host [hostname of leader]
-
 
 - action
     - create: Start the database with empty tables
@@ -318,21 +323,54 @@ Additional settings will be covered below as we go through some of these feature
 ## VoltDB Enterprise Manager ##
 VoltDB Enterprise Manager is a web-based management interface for VoltDB administration.  Administrators can use it to configure VoltDB servers or clusters, deploy these to available servers remotely, monitor their performance, and perform a number of maintenance operations.  All of these actions can be performed directly through command-line interfaces, but Enterprise Manager makes them easy and convenient.
 
-To start VoltDB Enterprise Manager for the first time, first stop the Voter database instance that was running in a terminal window.  Then enter the following commands:
+To start VoltDB Enterprise Manager for the first time, first stop the Voter database instance that was running in a terminal window.  Then enter the following commands.  If you don't have a $VOLTDB_HOME/management folder, then you installed VoltDB Community Edition.  You will need to download a 30-day trial of Enterprise Edition and install it in order to use VoltDB Enterprise Manager.
 
     cd $VOLTDB_HOME/management
     ./enterprise_manager.sh -b
+    
+    VoltDB enterprise manager started in background...
     
 The "-b" parameter causes the Enterprise Manager to run in the background.  It can be stopped using the following command:
 
     ./stop_enterprise_manager.sh
     
-But for now, leave it running.  Then open a browser and go to [http://localhost:9000](http://localhost:9000).  You should see this:
+For now, leave it running.  Open a browser and go to [http://localhost:9000](http://localhost:9000).  You will be prompted for a user name and passwrod.  Enter the following defaults:
 
-![Enterprise Manager](/path/to/img.png "Enterprise Manager screenshot")
+    Username: admin
+    Password: voltdb
+    
+You should then see the following:
+
+![Figure 1: Create New Database form](img/create_new_database.png "Enterprise Manager screenshot")
+
+We're going to create the Voter database that we previously started from the command line.  We'll start with a very simple configuration.  
+
+- Enter the information from Figure 2 into the form.  
+- Click the "Choose File" button and navigate to $VOLTDB_HOME/examples/voter and upload the voter.jar file.  
+- Click Create.
+
+![Figure 2: completed Create New Database form ](img/create_database_filled.png "Enterprise Manager screenshot")
+
+You should see the Voter database, and that it is currently Offline.  There will be a warning that the number of hosts must be > 0.  This warning is shown because you have only defined the database, but not how it will be deployed.  You need to add a server.
+
+In the "Servers" section, click the *Add* button, then click "Add new server" from the listing.  In the form that pops up, under "IP or Host name *" enter "localhost".  Then click "Create".  You should now see localhost listed in the "Servers" section, and the warning is no longer shown.
+
+Now you can start the database by clicking the "Start Database" button.  This brings up the "Start Database" form.
+
+- Select Action: "Create new database"
+- Select Mode: "Start in normal mode"
+- Click "Start"
+
+While the database is starting, you can observe the commands that are being executed under the Logs section.  When 
 
 
-Installing VoltDB Enterprise Manager is the same process as installing VoltDB.  It is simply included with the Enterprise Edition.  There is one pre-requisite SSH setup, in addition to the normal server prerequisites for VoltDB.  The server or computer where VoltDB Enterprise Manageer will be running needs to allow SSH connection to the other servers that will be used in VoltDB clusters without prompting for password.  More about that [here]().
+
+
+
+
+
+
+Installing VoltDB Enterprise Manager is the same process as installing VoltDB.  It is simply included with the Enterprise Edition.  There is one pre-requisite SSH setup, in addition to the normal server prerequisites for VoltDB.  The server or computer where VoltDB Enterprise Manageer will be running needs to allow SSH connection to the other servers that will be used in VoltDB clusters without prompting for password.  More about that [here](http://community.voltdb.com/docs/MgtGuide/SetUpPrepNodes).
 - launch VEM
 - configure an example app database
 - configure a cluster of 1 machine
@@ -340,14 +378,6 @@ Installing VoltDB Enterprise Manager is the same process as installing VoltDB.  
 - run client
 - stop database
 - stop VEM
-
-# Durability with Snapshots #
-- enable in deployment file
-- enable in VEM
-
-# Durability with the Command Log #
-- enable in deployment file
-- enable in VEM
 
 # Security #
 Read [*Using VoltDB* Chapter 8](http://community.voltdb.com/docs/UsingVoltDB/ChapSecurity)
