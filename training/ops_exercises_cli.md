@@ -1,26 +1,66 @@
 # Operational Exercises with the Command-line Interface#
 
-## 1. Starting and Stopping a cluster ##
+The following exercises use the command line interface to perform typical operations on a VoltDB database.  Unless specified otherwise, these commands will work on Community Edition or Enterprise Edition.
+
+
+## A. Starting and Stopping a cluster ##
+
+Set the following environment variables that will be used in subsequent commands.
+
+Start the database (the voter demo) manually:
+
+    VOLTDB_HOME=`cd ~/voltdb-* && pwd`
+    PATH=$PATH:$VOLTDB_HOME\bin
+    voltdb start catalog voter.jar deployment deployment.xml \
+        license $VOLTDB_HOME/voltdb/license.xml host localhost
+
+Add some data:
+
+    cd ~/voltdb-*
+    cd bin
+    sqlcmd
+    1> INSERT INTO contestants (contestant_number,contestant_name) VALUES (100,'Homer Simpson');
+    (1 row(s) affected)
+    2> exit
+    
+
+Stop the database
+
+    cd ~/voltdb-*
+    cd bin
+    sqlcmd
+    1> exec @Shutdown
+
+## B. Manual snapshot ##
+
+Start the database (the voter demo) manually:
+
+    VOLTDB_HOME=`cd ~/voltdb-* && pwd`
+    PATH=$PATH:$VOLTDB_HOME\bin
+    voltdb start catalog voter.jar deployment deployment.xml \
+        license $VOLTDB_HOME/voltdb/license.xml host localhost
+
+Add some data:
+
+    cd ~/voltdb-*
+    cd bin
+    sqlcmd
+    1> INSERT INTO contestants (contestant_number,contestant_name) VALUES (100,'Homer Simpson');
+    (1 row(s) affected)
+    2> exit
 
 
 
-VEM: Read [*Management Guide*: Chapter 5. Starting and Stopping the Database](http://community.voltdb.com/docs/MgtGuide/StartStopChap)
-
-## 2. Manual snapshot ##
+## C. Recovery ##
 
 
 
-## 3. Recovery ##
-
-
-
-## 4. Live Catalog Update ##
-VEM: Read [*Management Guide*: 7.2. Updating the Application Catalog](http://community.voltdb.com/docs/MgtGuide/UpdateCatalog#UpdateAddVersion)
+## D. Live Catalog Update ##
 
 CLI: Read [Performing a live catalog update using the command line](http://community.voltdb.com/node/1436)
 
 
-## 5. High Availability ## 
+## E. High Availability ## 
 ### Configuration ###
 High Availability in VoltDB (also called K-safety) is achieved by having every record of data stored and every transaction processed in two or more places.  This allows the database cluster to continue functioning with no loss of data if one or more servers fail.  Another advantage to this approach is that since the work is done in parallel, the throughput of the database is not affected when a server fails.
 
@@ -39,7 +79,7 @@ If you are using VoltDB Enterprise Manager, it's one of the [Database Configurat
 
 ### Node Failure and Rejoin ###
 
-## 6. Database Replication ##
+## F. Database Replication ##
 
 
 ## Stopping the database for Maintenance ##

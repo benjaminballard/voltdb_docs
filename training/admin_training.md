@@ -176,13 +176,6 @@ To make it easier to use and maintain scripts, you may want to do some of the fo
 - Add the $VOLTDB_HOME/bin directory to the PATH environment variable.
 
 
-Normally you install VoltDB by downloading the voltdb-*.tar.gz file and extracting it to the home directory of the user account that will be used to run the database.  Then to run the command-line tools more easily, add the /bin directory to the PATH environment variable.
-
-Another method of installation for Ubuntu or Debian-based Linux distributions is to use the .deb debian package file.  This will install VoltDB directly into the application and library directories that are shared by all users.  Because of this, the executables will automatically be in the PATH environment variable.  
-
-
-
-
 # An Introduction to the VoltDB interfaces #
 ## Command line with the aid of scripts ##
 ### Start the database ###
@@ -365,7 +358,7 @@ While the database is starting, you can observe the commands that are being exec
 
 Now run the client again from the command line, and observe the monitoring of operating statistics and the table statistics in the Data section.
 
-If the database doesn't start due to an SSH error, there needs to be some additional setup on the machine.  The server or computer where VoltDB Enterprise Manageer will be running needs to allow SSH connection to the other servers that will be used in VoltDB clusters without prompting for password.  More detail about this prerequisite is [here](http://community.voltdb.com/docs/MgtGuide/SetUpPrepNodes).
+If the database doesn't start due to an SSH error, there needs to be some additional setup on the machine.  The server or computer where VoltDB Enterprise Manageer will be running needs to allow SSH connection to the other servers that will be used in VoltDB clusters without prompting for password.  The standard "id_rsa" key should be generated as a passwordless key.  If it isn't, another passwordless key can be generated and used, but it must be uploaded when adding each server in VoltDB Enterprise Manager.  More detail about ssh configuration for VoltDB Enterprise Manager is [here](http://community.voltdb.com/docs/MgtGuide/SetUpPrepNodes).
 
 ------
 
