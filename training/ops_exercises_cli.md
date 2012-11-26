@@ -2,57 +2,115 @@
 
 The following exercises use the command line interface to perform typical operations on a VoltDB database.  Unless specified otherwise, these commands will work on Community Edition or Enterprise Edition.
 
+The commands can and should be organized into scripts to simplify and standardize the process of database operations.  Example scripts will be used in this exercise, and are also available for download.
+
+Before getting started, create a directory for your scripts.  Since we'll be application files that are provided in the examples/voter folder, it's convenient to create a directory under the examples folder, like this:
+
+    mkdir ~/voltdb/examples/scripts
 
 ## A. Starting and Stopping a cluster ##
+This exercise will show how to start and stop the database manually from the command line and using a simple script.
 
-Set the following environment variables that will be used in subsequent commands.
+Start the database (the voter demo) manually.  
 
-Start the database (the voter demo) manually:
-
-    VOLTDB_HOME=`cd ~/voltdb-* && pwd`
-    PATH=$PATH:$VOLTDB_HOME\bin
+    cd ~/voltdb/examples/voter
+    PATH=$PATH:~/voltdb/bin
     voltdb start catalog voter.jar deployment deployment.xml \
+        license ~/voltdb/voltdb/license.xml host localhost
+
+Notice the VoltDB logo and look for the message "Server completed initialization" which indicates that the database has started.
+
+Use ctrl-C to stop the database.  Now let's build the start.sh script in the scripts directory to make this easier.
+
+start.sh:
+
+    #!/usr/bin/env bash
+    VOLTDB_HOME="~/voltdb"
+    PATH="$PATH:$VOLTDB_HOME\bin"
+    voltdb start catalog ../voter/voter.jar deployment ../voter/deployment.xml \
         license $VOLTDB_HOME/voltdb/license.xml host localhost
 
-Add some data:
+Start the database again, using the start.sh script.
 
-    cd ~/voltdb-*
-    cd bin
-    sqlcmd
-    1> INSERT INTO contestants (contestant_number,contestant_name) VALUES (100,'Homer Simpson');
-    (1 row(s) affected)
-    2> exit
-    
+This time, stop the database administratively:
 
-Stop the database
-
-    cd ~/voltdb-*
-    cd bin
+    cd ~/voltdb/bin
     sqlcmd
     1> exec @Shutdown
 
+Since we can stop the database without using Ctrl-C from the local console, let's modify the start.sh script to run VoltDB as a background process.
+
+start.sh:
+
+    #!/usr/bin/env bash
+    VOLTDB_HOME="~/voltdb"
+    PATH="$PATH:$VOLTDB_HOME\bin"
+    nohup voltdb start catalog ../voter/voter.jar deployment ../voter/deployment.xml \
+        license $VOLTDB_HOME/voltdb/license.xml host localhost > /dev/null 2>$1 &
+
+
 ## B. Manual snapshot ##
+This exercise will show how to take a manual snapshot to persist a backup of the database, and then how to restart the database and restore data from this snapshot.
 
-Start the database (the voter demo) manually:
+A snapshot is a point-in-time consistent copy of the entire contents of the database.  It is written to local disk at each node in a cluster to distribute the work of persistence.  A snapshot can be taken at any time, whether the database is online and available to users or in admin mode.
 
-    VOLTDB_HOME=`cd ~/voltdb-* && pwd`
-    PATH=$PATH:$VOLTDB_HOME\bin
-    voltdb start catalog voter.jar deployment deployment.xml \
-        license $VOLTDB_HOME/voltdb/license.xml host localhost
+Start the database (the voter demo) manually using the start.sh script.
 
-Add some data:
+In order to prove we have persisted data, we first need to add some data.  We can do this using sqlcmd:
 
-    cd ~/voltdb-*
-    cd bin
+    cd ~/voltdb/bin
     sqlcmd
     1> INSERT INTO contestants (contestant_number,contestant_name) VALUES (100,'Homer Simpson');
     (1 row(s) affected)
-    2> exit
 
+You can verify that the data was inserted by querying the contestants table from the same sqlcmd window:
+
+    2> SELECT * FROM contestants;
+    
+Now let's prepare a directory for a snapshot.  Open a new terminal window:
+
+    cd ~/voltdb/examples/scripts
+    mkdir snapshots
+
+Next, we will take a snapshot of the database.  But first, we should take other users into consideration.  In a real world situation, we aren't the only ones who may be interacting with the database.  If we did nothing to prevent other users from modifying data during or after the snapshot, their changes would be lost.  To take a snapshot that we know contains the very latest data, we first need to pause the database to put it into administrative mode, preventing users from making any further changes.  Then, we can take the snapshot.  We're going to put the snapshot in the "snapshots" directory we just created.  This can contain multiple snapshots.  We're going to call this one "snapshot_01".  
+
+    3> exec @Pause
+    4> exec @SnapshotSave ~/voltdb/examples/scripts/snapshots snapshot_01 0
+
+The final "0" parameter in the last command means this snapshot will be taken asynchronously without blocking any new transactions.  We could have used 1 to make it block, but we already paused the database so we know no other transactions are taking place.  When you take a snapshot to a running database for backup purposes, you don't want to block incoming transactions, so we are using the 0 parameter since it is the most typical use.
+
+Watch for confirmation that the snapshot was taken successfully.  Then we can stop the database and exit sqlcmd:
+
+    4> exec @Shutdown
+    5> exit
+    
+Before we restart the database, again we want to consider the users.  We don't want users to interact with an empty version of the database, this could cause application errors, or it could prevent us from reloading the snapshot.  So we want to start the database in administrative mode.  To do this, we need to modify the deployment.xml file that we're using.  In our case, that is the example deployment.xml file provided in the examples/voter directory.  Add the following section to the file:
+
+    <deployment>
+      ...
+      <admin-mode port="21211" adminstartup="true"/>
+    </deployment>
+
+Now restart the database using the start.sh script.
+
+Once the database is restarted, open a new sqlcmd console and verify that there is no data:
+
+    cd ~/voltdb/bin
+    sqlcmd
+    1> SELECT * FROM contestants;
+
+Now, use the following command to reload the snapshot that was taken earlier:
+
+    2> exec @SnapshotRestore /voltdb/examples/scripts/shapshots snapshot_01
+    
+Once the snapshot is successfully loaded, verify that the data has been restored:
+
+    3> SELECT * FROM contestants;
 
 
 ## C. Recovery ##
 
+Manual snapshots only provide persistence for given points in time.  They do not provide continuous data persistence.  That requires command-logging which is an Enterprise Edition feature.
 
 
 ## D. Live Catalog Update ##
