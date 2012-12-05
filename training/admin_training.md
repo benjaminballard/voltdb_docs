@@ -334,7 +334,7 @@ For now, leave it running.  Open a browser and go to [http://localhost:9000](htt
     
 You should then see the following:
 
-![Figure 1: Create New Database form](img/create_new_database.png "Enterprise Manager screenshot")
+![Figure 1: Create New Database form](https://raw.github.com/benjaminballard/voltdb_docs/master/training/img/create_database_filled.png "Enterprise Manager screenshot")
 
 We're going to create the Voter database that we previously started from the command line.  We'll start with a very simple configuration.  
 
@@ -342,7 +342,7 @@ We're going to create the Voter database that we previously started from the com
 - Click the "Choose File" button and navigate to $VOLTDB_HOME/examples/voter and upload the voter.jar file.  
 - Click Create.
 
-![Figure 2: completed Create New Database form ](img/create_database_filled.png "Enterprise Manager screenshot")
+![Figure 2: completed Create New Database form ](https://raw.github.com/benjaminballard/voltdb_docs/master/training/img/create_database_filled.png "Enterprise Manager screenshot")
 
 You should see the Voter database, and that it is currently Offline.  There will be a warning that the number of hosts must be > 0.  This warning is shown because you have only defined the database, but not how it will be deployed.  You need to add a server.
 
