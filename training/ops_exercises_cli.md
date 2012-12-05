@@ -10,16 +10,14 @@ Before getting started, create a directory for your scripts.  Since we'll be app
 
 ## Contents ##
 
-- [Starting and stopping a cluster](#starting)
-- [Taking manual snapshots](#snapshots)
-- [Enabling Command Logging](#enablecl)
-- [Recovery from Command Log](#recovery)
-- [Live Catalog Update](#liveupdate)
-- [Planned Maintenance Window](#maintenance)
-- [Enabling High Availability](#ha)
+- [Starting and stopping a cluster](#starting) DONE
+- [Taking manual snapshots](#snapshots) DONE
+- [Command Logging](#command) FILL
+- [Live Catalog Update](#liveupdate) DONE
+- [Planned Maintenance Window](#maintenance) FILL from snapshots
+- [Enabling High Availability](#ha) FILL
 - [Node failure and rejoin](#rejoin)
-- [Enabling Database Replication](#replication)
-- [Replication failover](#failover)
+- [Database Replication and failover](#replication)
 - [Upgrading VoltDB](#upgrading)
 - [Enabling Security](#security)
 - [Support](#support)
@@ -124,9 +122,22 @@ Once the snapshot is successfully loaded, verify that the data has been restored
     3> SELECT * FROM contestants;
 
 
-## <a id="recovery"></a>Recovery ##
+## <a id="command"></a>Command Logging ##
 
 Manual snapshots only provide persistence for given points in time.  They do not provide continuous data persistence.  That requires command-logging which is an Enterprise Edition feature.  In this exercise, we will enable command-logging and use it to recover when restarting the database after a simulated failure.
+
+    <deployment>
+        <cluster hostcount="4" sitesperhost="2" kfactor="1" />
+        <commandlog enabled="true" logsize="1024" synchronous="false">
+            <frequency time="200" transactions="500"/>
+        </commandlog>
+        <paths>
+            <commandlog path="/faskdisk/voltdblog/" />
+            <commandlogsnapshot path="/opt/voltdb/cmdsnaps/" />
+        </paths>
+    </deployment>
+
+
 
 
 
@@ -213,13 +224,10 @@ High availability is a configurable option that set before starting VoltDB.  If 
     </deployment>
 
 
-If you are using VoltDB Enterprise Manager, it's one of the [Database Configuration options](http://community.voltdb.com/docs/MgtGuide/HostConfigDBOpts).
-
 ### <a id="rejoin"></a>Node Failure and Rejoin ###
 
 ## <a id="replication"></a>Database Replication ##
 
-## <a id="failover"></a>Failover ##
 
 # <a id="upgrading"></a>Upgrading VoltDB #
 See [Upgrade Notes](http://community.voltdb.com/docs/EnterpriseReleaseNotes/index#UpgradeNotes) from Enterprise Release Notes.
