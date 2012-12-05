@@ -105,7 +105,13 @@ Before we restart the database, again we want to consider the users.  We don't w
       <admin-mode port="21211" adminstartup="true"/>
     </deployment>
 
-Now restart the database using the start.sh script.
+Now we need to restart the database, but we should not use the start.sh script because it uses the "START" action parameter.  We'll explain more about this in the section on taking a maintenance window, but we want to be explicit about starting with an empty database since we're going to restore all of our data from the snapshot, so we want to start VoltDB using the "CREATE" action parameter.  We can put this into a script called start_empty.sh:
+
+    #!/usr/bin/env bash
+    VOLTDB_HOME="~/voltdb"
+    PATH="$PATH:$VOLTDB_HOME\bin"
+    voltdb create catalog ../voter/voter.jar deployment ../voter/deployment.xml \
+        license $VOLTDB_HOME/voltdb/license.xml host localhost
 
 Once the database is restarted, open a new sqlcmd console and verify that there is no data:
 
@@ -173,28 +179,31 @@ In our example start.sh script, we are using the START action parameter, so no c
 
 Follow these steps to test command log recovery:
 
-1. Make the edits to deployment.xml to enable command logging.
-2. Start the database using the start.sh script.
-3. Open sqlcmd, load some data and verify:
+1) Make the edits to deployment.xml to enable command logging.  
+
+2) Start the database using the start.sh script.  
+
+3) Open sqlcmd, load some data and verify:
 
     cd ~/voltdb/bin
     sqlcmd
     1> INSERT INTO contestants (contestant_number,contestant_name) VALUES (100,'Homer Simpson');
     2> SELECT * FROM contestants;
 
-4. In sqlcmd, stop the database:
+4) In sqlcmd, stop the database:
 
     4> exec @Shutdown
     5> exit
 
-5. Restart the database usint the start.sh script.
+5) Restart the database usint the start.sh script.
 
-6. Open sqlcmd and verify that the data is still there.
+6) Open sqlcmd and verify that the data is still there.
 
     cd ~/voltdb/bin
     sqlcmd
     1> INSERT INTO contestants (contestant_number,contestant_name) VALUES (100,'Homer Simpson');
     2> SELECT * FROM contestants;
+
 
 ### Recovery vs. Maintenance ###
 
@@ -267,9 +276,48 @@ The engineers at VoltDB are hard at work to eliminate this process, and to suppo
 
 One more important note about maintenance is if high availability is enabled, some maintenance can also be performed without stopping the entire cluster.  Individual nodes can be stopped and later rejoined to the cluster in order to add RAM to the server, perform upgrades to the Operating System, Java SDK, or other software, and similar changes.
 
-The process for a planned maintenance window is essentially the same as we practiced in the [Taking manual snapshots](#snapshots) section.  There, we included a few important "extra" steps that took into account users who may be connected to the database.  This ensured that the snapshot would include the very latest commited transactions, and that users would not be able to execute any work when the database started until the snapshot was reloaded.
+The process for a planned maintenance window is essentially the same as we practiced in the [Taking manual snapshots](#snapshots) section.  There, we included a few important "extra" steps that took into account users who may be connected to the database.  This time, the command examples will be in a format that makes it easier to combine into scripts.
+
+Prerequisite: you should already have the following line in the deployment.xml file so that any time you start the database it starts in Admin mode.
+
+    <deployment>
+      ...
+      <admin-mode port="21211" adminstartup="true"/>
+    </deployment>
 
 
+1) Pause the database (disconnect users)
+
+    echo "exec @Pause" | sqlcmd --servers=localhost --port=21211
+    
+2) Take a manual snapshot
+
+    echo "exec @SnapshotSave /path/to/save/dir snapshot_name 1" | sqlcmd --servers=localhost --port=21211
+
+3) Shut down the database
+
+    echo "exec @Shutdown" | sqlcmd --servers=localhost --port=21211
+
+4) Make changes (update the catalog or deployment files)
+
+5) Restart the database in admin mode (using the start_empty.sh script)
+
+    ./start_empty.sh
+    
+-or-
+    
+    VOLTDB_HOME="~/voltdb"
+    PATH="$PATH:$VOLTDB_HOME\bin"
+    nohup voltdb create catalog ../voter/voter.jar deployment ../voter/deployment.xml \
+        license $VOLTDB_HOME/voltdb/license.xml host localhost > /dev/null 2>$1 &
+
+6) Reload the data from the snapshot
+
+    echo "exec @SnapshotRestore  /path/to/save/dir snapshot_name" | sqlcmd --servers=localhost --port=21211    
+
+7) Resume the database (allow users to connect)
+
+    echo "exec @Resume" | sqlcmd --servers=localhost --port=21211
 
 
 ## <a id="ha"></a>High Availability ##
