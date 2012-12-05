@@ -8,7 +8,23 @@ Before getting started, create a directory for your scripts.  Since we'll be app
 
     mkdir ~/voltdb/examples/scripts
 
-## A. Starting and Stopping a cluster ##
+## Contents ##
+
+- [Starting and stopping a cluster](#starting)
+- [Taking manual snapshots](#snapshots)
+- [Enabling Command Logging](#enablecl)
+- [Recovery from Command Log](#recovery)
+- [Live Catalog Update](#liveupdate)
+- [Planned Maintenance Window](#maintenance)
+- [Enabling High Availability](#ha)
+- [Node failure and rejoin](#rejoin)
+- [Enabling Database Replication](#replication)
+- [Replication failover](#failover)
+- [Upgrading VoltDB](#upgrading)
+- [Enabling Security](#security)
+- [Support](#support)
+
+## <a id="starting"></a>Starting and Stopping a cluster ##
 This exercise will show how to start and stop the database manually from the command line and using a simple script.
 
 Start the database (the voter demo) manually.  
@@ -49,7 +65,7 @@ start.sh:
         license $VOLTDB_HOME/voltdb/license.xml host localhost > /dev/null 2>$1 &
 
 
-## B. Manual snapshot ##
+## <a id="snapshots"></a>Manual snapshot ##
 This exercise will show how to take a manual snapshot to persist a backup of the database, and then how to restart the database and restore data from this snapshot.
 
 A snapshot is a point-in-time consistent copy of the entire contents of the database.  It is written to local disk at each node in a cluster to distribute the work of persistence.  A snapshot can be taken at any time, whether the database is online and available to users or in admin mode.
@@ -108,14 +124,14 @@ Once the snapshot is successfully loaded, verify that the data has been restored
     3> SELECT * FROM contestants;
 
 
-## C. Recovery ##
+## <a id="recovery"></a>Recovery ##
 
 Manual snapshots only provide persistence for given points in time.  They do not provide continuous data persistence.  That requires command-logging which is an Enterprise Edition feature.  In this exercise, we will enable command-logging and use it to recover when restarting the database after a simulated failure.
 
 
 
 
-## D. Live Catalog Update ##
+## <a id="liveupdate"></a>Live Catalog Update ##
 
 VoltDB requires all DDL and stored procedures to be pre-compiled into a catalog file which is loaded into VoltDB during startup.  
 
@@ -174,8 +190,15 @@ Once the catalog is updated, you can verify that the table is there.  If the tab
 
 One thing to be careful about is keeping track of the correct catalog files.  One of the supported online database modifications is to drop a table, which is done by simply omitting the table definition from the DDL in a catalog update.  Tables can be dropped whether they contain data or not.  Normally a change like this is intentional, but if you used the wrong catalog file it could lead to unintended consequences.  For example, if you ran @UpdateApplicationCatalog with the catalog file from a different application, it probably has none of the same tables or procedures as the existing catalog, and could result in the dropping of all the tables and the creation of new, different tables.
 
+## <a id="maintenance"></a>Stopping the database for Maintenance ##
+If you're starting the database from the command line interface, read [Performing a Maintenance Window using the command-line](http://community.voltdb.com/node/1426).
 
-## E. High Availability ## 
+If you're using VoltDB Enterprise Manager, read [*Management Guide* 5.2. Stopping the Database](http://community.voltdb.com/docs/MgtGuide/StopStopCluster).
+VEM
+CLI
+
+
+## <a id="ha"></a>High Availability ##
 ### Configuration ###
 High Availability in VoltDB (also called K-safety) is achieved by having every record of data stored and every transaction processed in two or more places.  This allows the database cluster to continue functioning with no loss of data if one or more servers fail.  Another advantage to this approach is that since the work is done in parallel, the throughput of the database is not affected when a server fails.
 
@@ -192,23 +215,17 @@ High availability is a configurable option that set before starting VoltDB.  If 
 
 If you are using VoltDB Enterprise Manager, it's one of the [Database Configuration options](http://community.voltdb.com/docs/MgtGuide/HostConfigDBOpts).
 
-### Node Failure and Rejoin ###
+### <a id="rejoin"></a>Node Failure and Rejoin ###
 
-## F. Database Replication ##
+## <a id="replication"></a>Database Replication ##
 
+## <a id="failover"></a>Failover ##
 
-## Stopping the database for Maintenance ##
-If you're starting the database from the command line interface, read [Performing a Maintenance Window using the command-line](http://community.voltdb.com/node/1426).
-
-If you're using VoltDB Enterprise Manager, read [*Management Guide* 5.2. Stopping the Database](http://community.voltdb.com/docs/MgtGuide/StopStopCluster).
-VEM
-CLI
-
-# Upgrading VoltDB #
+# <a id="upgrading"></a>Upgrading VoltDB #
 See [Upgrade Notes](http://community.voltdb.com/docs/EnterpriseReleaseNotes/index#UpgradeNotes) from Enterprise Release Notes.
 
-# Security #
+# <a id="security"></a>Security #
 Read [*Using VoltDB* Chapter 8](http://community.voltdb.com/docs/UsingVoltDB/ChapSecurity)
 
 
-# Support Overview #
+# <a id="support"></a>Support Overview #
