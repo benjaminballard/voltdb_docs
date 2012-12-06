@@ -32,12 +32,16 @@ To simulate a node failure, connect to one of the servers in the cluster and man
 
 Connect VoltDB Studio to the surviving node to verify that it is still running.
 
-To rejoin the failed node, we will restart the database process on that server, but with the "REJOIN" action parameter.
+To rejoin the failed node, we will restart the database process on that server, but with the "LIVE REJOIN" action parameter.
 
     #!/usr/bin/env bash
     VOLTDB_HOME="~/voltdb"
     PATH="$PATH:$VOLTDB_HOME\bin"
     SURVIVOR=[hostname of surviving server]
-    nohup voltdb rejoin catalog ../voter/voter.jar deployment ../voter/deployment.xml \
+    nohup voltdb live rejoin catalog ../voter/voter.jar deployment ../voter/deployment.xml \
         license $VOLTDB_HOME/voltdb/license.xml host $SURVIVOR > /dev/null 2>$1 &
 
+
+---------------------
+
+Next: [Database Replication and failover](ex_cli_07_replication.md)

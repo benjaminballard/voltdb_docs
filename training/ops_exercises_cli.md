@@ -16,18 +16,14 @@ Before getting started, create a directory for your scripts.  Since we'll be app
 - [Live Catalog Update](ex_cli_04_liveupdate.md)
 - [Planned Maintenance Window](ex_cli_05_maintenance.md)
 - [High Availability](ex_cli_06_high_availability.md)
-- [Database Replication and failover](#replication)
-- [Upgrading VoltDB](#upgrading)
-- [Enabling Security](#security)
-- [Support](#support)
+- [Database Replication and failover](ex_cli_07_replication.md)
+- [Upgrading VoltDB]()
+- [Enabling Security]()
+- [Support]()
 
 
 
 
-
-## <a id="replication"></a>Database Replication ##
-
-TODO
 
 # <a id="upgrading"></a>Upgrading VoltDB #
 See [Upgrade Notes](http://community.voltdb.com/docs/EnterpriseReleaseNotes/index#UpgradeNotes) from Enterprise Release Notes.
@@ -35,8 +31,5 @@ See [Upgrade Notes](http://community.voltdb.com/docs/EnterpriseReleaseNotes/inde
 # <a id="security"></a>Security #
 Read [*Using VoltDB* Chapter 8](http://community.voltdb.com/docs/UsingVoltDB/ChapSecurity)
 
-TODO
-
 # <a id="support"></a>Support Overview #
 
-TODO
