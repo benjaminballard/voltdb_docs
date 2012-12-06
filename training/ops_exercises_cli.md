@@ -4,7 +4,7 @@ The following exercises use the command line interface to perform typical operat
 
 The commands can and should be organized into scripts to simplify and standardize the process of database operations.  Example scripts will be used in this exercise, and are also available for download.
 
-Before getting started, create a directory for your scripts.  Since we'll be application files that are provided in the examples/voter folder, it's convenient to create a directory under the examples folder, like this:
+Before getting started, create a directory for your scripts.  Since we'll be using application files that are provided in the examples/voter folder, it's convenient to create a directory under the examples folder, like this:
 
     mkdir ~/voltdb/examples/scripts
 
@@ -17,19 +17,12 @@ Before getting started, create a directory for your scripts.  Since we'll be app
 - [Planned Maintenance Window](ex_cli_05_maintenance.md)
 - [High Availability](ex_cli_06_high_availability.md)
 - [Database Replication and failover](ex_cli_07_replication.md)
-- [Upgrading VoltDB]()
-- [Enabling Security]()
+- [Upgrading VoltDB](ex_cli_08_upgrade.md)
+- [Enabling Security](ex_cli_09_security.md)
 - [Support]()
 
 
 
 
 
-# <a id="upgrading"></a>Upgrading VoltDB #
-See [Upgrade Notes](http://community.voltdb.com/docs/EnterpriseReleaseNotes/index#UpgradeNotes) from Enterprise Release Notes.
-
-# <a id="security"></a>Security #
-Read [*Using VoltDB* Chapter 8](http://community.voltdb.com/docs/UsingVoltDB/ChapSecurity)
-
-# <a id="support"></a>Support Overview #
 
