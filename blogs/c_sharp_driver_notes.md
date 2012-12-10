@@ -4,15 +4,14 @@
 
 Download the driver:
 - Latest build with documentation: [Downloads](http://voltdb.com/tao-volt/downloads-home.php)
-- Full sourceon Github: [voltdb-client-csharp](https://github.com/VoltDB/voltdb-client-csharp)
+- Full source on Github: [voltdb-client-csharp](https://github.com/VoltDB/voltdb-client-csharp)
 
 The best document to start on is the blog post [Introducting VoltDB.NET: C# Library for Your VoltDB Applications](http://blog.voltdb.com/introducing-voltdbnet-c-library-your-voltdb-applications/).
 
 After reading this, review the Voter example application that is provided under the examples folder with the driver.  This would be a suitable example to modify if you wanted to build a C# client benchmark that performs a repetitive operation at a given rate and measures throughput and latency.
 
 ## VoltDB.NET in a nutshell ##
-VoltDB.NET in a nutshell
-The .NET/C# client library for VoltDB is extremely flexible and allows you to develop WinForms, Console and Web applications and services much as you would do leveraging any other back-end data service or database.
+The .NET/C# client library for VoltDB is extremely flexible and allows you to develop WinForms, Console and Web applications and services much as you would leveraging any other back-end data service or database.
 
 - Connect with a customized connectionstring in your app/web.config.
 - Perform Synchronous or Asynchronous data operations using standard .NET design patterns.
@@ -22,19 +21,17 @@ The .NET/C# client library for VoltDB is extremely flexible and allows you to de
 
 Key considerations:
 
-All access is thread-safe
-- Safe for multi-threaded application
-- Safe as shared connections for a website/service
-- OK to mix asynchronous and synchronous calls
-- OK to have long-running callbacks (they are Thread-Pooled)
-
-Resilience
-- Connect to multiple nodes
-
-Performance
-- Share: multi-threading on a single connection is faster
-- Production: No Tracing (ever) or Statistics (unless needed)
-- Avoid usage of IAsync WaitHandles: they are slow!
+- All access is thread-safe
+    - Safe for multi-threaded application
+    - Safe as shared connections for a website/service
+    - OK to mix asynchronous and synchronous calls
+    - OK to have long-running callbacks (they are Thread-Pooled)
+- Resilience
+    - Connect to multiple nodes
+- Performance
+    - Share: multi-threading on a single connection is faster
+    - Production: No Tracing (ever) or Statistics (unless needed)
+    - Avoid usage of IAsync WaitHandles: they are slow!
 
 
 ## Connecting to VoltDB ##
@@ -68,6 +65,7 @@ VoltDB.NET implements:
 - Sync: .Execute
 - Async: .Begin/.Cancel/.End with IAsyncResult
 
+# Example Code #
 
 ## Calling Procedures ##
 
@@ -114,33 +112,35 @@ Get Async results (if not using callback)
 
 Wrapper Rules:
 
-* Up to 35 input parameters
-* Types must be compatible with core VoltDB types
-* Types can be single-values or arrays
-    * sbyte, short, int, long, double, VoltDecimal, DateTime, string
-    * sbyte?, short?, int?, …
-    * sbyte[], sbyte?[], short[], short?[], …
-* Or, use Runtime Wrappers (but the type of runtime values must still be compatible)
+- Up to 35 input parameters
+- Types must be compatible with core VoltDB types
+- Types can be single-values or arrays
+    - sbyte, short, int, long, double, VoltDecimal, DateTime, string
+    - sbyte?, short?, int?, …
+    - sbyte[], sbyte?[], short[], short?[], …
+
+
+Another option is to use Runtime Wrappers, but the type of runtime values must still be compatible.
 
     conn.Procedures.Wrap<Table[],object,…,object>(…);
 
 Per-execution callback delegate/closures
 
     IAsyncResult h = my.BeginExecute(1, "test", MyDelegate);
-
-Or:
-
+    
+    // or...
+    
     h = my.BeginExecute( 1, "test", (r) => MyClosureFunction(r, …) );
 
-Re-use Wrappers across connections
+Re-use Wrappers across connections (of course, executions still occur in the initiating context/connection).
 
     my.SetConnection(otherVoltConnection);
 
-Of course, executions still occur in the initiating context/connection.
+
 
 ## Consuming Results ##
 
-Access data directly
+Access data directly...
 
     double? value = response.Result
                             .GetValue<double?>(col, row);
@@ -150,7 +150,7 @@ Access data directly
                             .ElementAt(row)
                             .GetValue<double?>(col);
 
-Or through Strongly-typed Table Wrappers
+...or through Strongly-typed Table Wrappers
 
     var myTable = response.Result.Wrap<int?,…,double?>();
 
@@ -162,7 +162,7 @@ Wrapper Rules:
 - Types must be compatible with core VoltDB types and flagged as Nullable => use int? (not int)
     - sbyte?, short?, int?, long?, double?, VoltDecimal?, DateTime? and string
 
-LINQ-friendly!
+Results are LINQ-friendly:
 
     // On a strongly-typed VoltDB data table
     myTable.Rows.Where(r => r.Column2 == "Books")
@@ -174,7 +174,7 @@ LINQ-friendly!
             .Select(r => new { Title = r. GetValue<string>(1), Price = r. GetValue<double>(6) })
             .OrderBy(p => p.Price);
 
-Metadata, etc.
+Access metadata:
 
     int count = myTable.RowCount;
     bool check = myTable.HasData;
@@ -188,7 +188,7 @@ Metadata, etc.
     int?[] column1Data = raw.GetColumnData<int?>(0);
     object[] column1Data = raw.GetColumnData(0);
 
-Filling a (System.Data.)DataTable
+Fill a (System.Data.)DataTable
 
     Table raw = procedureWrapper.Execute().Result;
     DataTable dt = new DataTable("Result");
@@ -201,7 +201,7 @@ Filling a (System.Data.)DataTable
         dt.Rows.Add(values);
     }
 
-Filling a (System.Windows.Forms.)DataGridView
+Fill a (System.Windows.Forms.)DataGridView
 
     view.Columns.Clear();
     view.DataSource = null;
