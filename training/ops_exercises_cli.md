@@ -18,8 +18,8 @@ Before getting started, create a directory for your scripts.  Since we'll be usi
 - [High Availability](ex_cli_06_high_availability.md)
 - [Database Replication and failover](ex_cli_07_replication.md)
 - [Upgrading VoltDB](ex_cli_08_upgrade.md)
-- [Enabling Security](ex_cli_09_security.md)
-- [Support]()
+
+
 
 
 
