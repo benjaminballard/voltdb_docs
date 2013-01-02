@@ -16,7 +16,7 @@ start.sh:
 
     #!/usr/bin/env bash
     VOLTDB_HOME="~/voltdb"
-    PATH="$PATH:$VOLTDB_HOME\bin"
+    PATH="$PATH:$VOLTDB_HOME/bin"
     voltdb start catalog ../voter/voter.jar deployment ../voter/deployment.xml \
         license $VOLTDB_HOME/voltdb/license.xml host localhost
 
@@ -26,7 +26,7 @@ This time, stop the database administratively:
 
     cd ~/voltdb/bin
     sqlcmd
-    1> exec @Shutdown
+    1> exec @Shutdown;
 
 Since we can stop the database without using Ctrl-C from the local console, let's modify the start.sh script to run VoltDB as a background process.
 
@@ -34,9 +34,9 @@ start.sh:
 
     #!/usr/bin/env bash
     VOLTDB_HOME="~/voltdb"
-    PATH="$PATH:$VOLTDB_HOME\bin"
+    PATH="$PATH:$VOLTDB_HOME/bin"
     nohup voltdb start catalog ../voter/voter.jar deployment ../voter/deployment.xml \
-        license $VOLTDB_HOME/voltdb/license.xml host localhost > /dev/null 2>$1 &
+        license $VOLTDB_HOME/voltdb/license.xml host localhost > /dev/null 2>&1 &
 
 
 --------------

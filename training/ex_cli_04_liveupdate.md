@@ -34,7 +34,7 @@ Now, we can use the @UpdateApplicationCatalog procedure to update the catalog on
     cd ~/voltdb/bin
     sqlcmd
     SQL Command :: localhost:21212
-    1> exec @UpdateApplicationCatalog ~/voltdb/examples/voter/voter.jar ~/voltdb/examples/voter/deployment.xml
+    1> exec @UpdateApplicationCatalog ~/voltdb/examples/voter/voter.jar ~/voltdb/examples/voter/deployment.xml;
 
 If the command is successful, you will see the following output:
 

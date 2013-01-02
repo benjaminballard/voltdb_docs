@@ -93,7 +93,7 @@ When we started the "voter" database earlier, we took some shortcuts by using th
 Go to the terminal window where you ran the "./run.sh server" command, where VoltDB is still running.  Type Ctrl-C to stop the database process, then type the following command to start the database manually:
 
     VOLTDB_HOME=`cd ~/voltdb-* && pwd`
-    PATH=$PATH:$VOLTDB_HOME\bin
+    PATH=$PATH:$VOLTDB_HOME/bin
     voltdb start catalog voter.jar deployment deployment.xml \
         license $VOLTDB_HOME/voltdb/license.xml host localhost
 

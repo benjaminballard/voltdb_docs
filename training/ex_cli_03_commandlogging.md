@@ -62,7 +62,7 @@ Follow these steps to test command log recovery:
 
 4) In sqlcmd, stop the database:
 
-    4> exec @Shutdown
+    4> exec @Shutdown;
     5> exit
 
 5) Restart the database usint the start.sh script.

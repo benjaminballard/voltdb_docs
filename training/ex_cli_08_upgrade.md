@@ -12,7 +12,7 @@ Refer to the [Planned Maintenance Window](ex_cli_05_maintenance.md) process for 
 For example:
 
     mv ~/voltdb ~/voltdb_old
-    tar -xzvf voltdb-ent-[newversion].tar.gz -C $HOME
+    tar -xzvf voltdb-ent-[newversion].tar.gz -C ~
     mv ~/voltdb-ent-[newversion] ~/voltdb
 
 5. Restart the database in admin mode
