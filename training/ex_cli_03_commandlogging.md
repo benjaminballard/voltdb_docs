@@ -43,41 +43,45 @@ If you are following these exercises using Community Edition, you can enable aut
 
 ## Recovery ##
 
-When the database is started with the START action parameter, it will check if command logging was enabled and if there are snapshots and a command log that can be recovered, and then it will recover them as the database is restarted.  If the command log does not exist, then the database will start with a new empty database, which is the same as when you start with the CREATE action parameter.  You can also explicitly tell the database to recover from the command log by using the RECOVER action parameter.
+So far, we have only started the database empty, using the "voltdb" command line tool with the "create" action parameter.  Another option is to use the "recover" action parameter which will start the database, load data from the most recent command log snapshot, and then play back the remainder of the command log to restore the database to the very latest transaction.  So we will make a new script for recovering the database after a crash.
 
-In our example start.sh script, we are using the START action parameter, so no changes are necessary to recover from the command log once it was enabled.
+recover.sh:
+
+    #!/usr/bin/env bash
+    VOLTDB_HOME="$HOME/voltdb"
+    APP_HOME="$VOLTDB_HOME/examples/voter"
+    nohup voltdb recover catalog $APP_HOME/voter.jar deployment $APP_HOME/deployment.xml \
+        license $VOLTDB_HOME/voltdb/license.xml host localhost > /dev/null 2>&1 &
+
 
 Follow these steps to test command log recovery:
 
 1) Make the edits to deployment.xml to enable command logging.  
 
-2) Start the database using the start.sh script.  
+2) Start the database using the create.sh script.  
 
-3) Open sqlcmd, load some data and verify:
+3) Run the voter client again to load data.
 
-    cd ~/voltdb/bin
-    sqlcmd
-    1> INSERT INTO contestants (contestant_number,contestant_name) VALUES (100,'Homer Simpson');
-    2> SELECT * FROM contestants;
+    cd ~/voltdb/examples/voter
+    ./run.sh client
 
 4) In sqlcmd, stop the database:
 
-    4> exec @Shutdown;
-    5> exit
+    sqlcmd
+    1> exec @Shutdown;
+    2> exit
 
-5) Restart the database usint the start.sh script.
+5) Restart the database using the recover.sh script.
 
 6) Open sqlcmd and verify that the data is still there.
 
-    cd ~/voltdb/bin
     sqlcmd
-    1> INSERT INTO contestants (contestant_number,contestant_name) VALUES (100,'Homer Simpson');
-    2> SELECT * FROM contestants;
+    1> SELECT COUNT(*) FROM votes;
 
 
 ## Recovery vs. Maintenance ##
 
-It is important to note that command logging provides durability for recovery purposes.  Recovery means restoring the database back to the same configuration and state before it stopped.  VoltDB does not support making configuration changes as part of the recovery process.  If you need to make configuration changes, they should be made using the [Planned Maintenance Window](ex_cli_05_maintenance.md) process.
+It is important to note that command logging provides durability for recovery purposes.  Recovery means restoring the database back to the same configuration and state before it stopped.  VoltDB does not support making configuration changes as part of the recovery process.  If you need to make configuration changes, they should be made using the [Planned Maintenance Window](ex_cli_05_maintenance.md) process, which is a subsequent exercise.  But first, let's look at how we can make some schema and configuration changes to a running database.
 
 ---------------------------------
 

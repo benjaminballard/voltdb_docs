@@ -30,15 +30,14 @@ Prerequisite: you should already have the following line in the deployment.xml f
 
 4) Make changes (update the catalog or deployment files)
 
-5) Restart the database in admin mode (using the start_empty.sh script)
+5) Restart the database in admin mode (using the create.sh script)
 
-    ./start_empty.sh
+    ./create.sh
     
 -or-
     
     VOLTDB_HOME="~/voltdb"
-    PATH="$PATH:$VOLTDB_HOME/bin"
-    nohup voltdb create catalog ../voter/voter.jar deployment ../voter/deployment.xml \
+    nohup voltdb create catalog $VOLTDB_HOME/examples/voter/voter.jar deployment $VOLTDB_HOME/examples/voter/deployment.xml \
         license $VOLTDB_HOME/voltdb/license.xml host localhost > /dev/null 2>&1 &
 
 6) Reload the data from the snapshot

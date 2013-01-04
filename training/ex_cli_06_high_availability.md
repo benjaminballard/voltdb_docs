@@ -36,8 +36,7 @@ To rejoin the failed node, we will restart the database process on that server, 
 
     #!/usr/bin/env bash
     VOLTDB_HOME="~/voltdb"
-    PATH="$PATH:$VOLTDB_HOME/bin"
-    SURVIVOR=[hostname of surviving server]
+    SURVIVOR=[hostname of a surviving server]
     nohup voltdb live rejoin catalog ../voter/voter.jar deployment ../voter/deployment.xml \
         license $VOLTDB_HOME/voltdb/license.xml host $SURVIVOR > /dev/null 2>&1 &
 
