@@ -21,4 +21,5 @@ For example:
 
 ----------------------------------------
 
-Next: [Enabling Security](ex_cli_09_security.md)
+[CLI Exercises](ops_exercises_cli.md)
+

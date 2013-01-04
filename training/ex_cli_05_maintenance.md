@@ -52,4 +52,4 @@ Prerequisite: you should already have the following line in the deployment.xml f
 
 ------------------
 
-Next: [High Availability](ex_cli_06_high_availability.md)
+[CLI Exercises](ops_exercises_cli.md) | Next: [High Availability](ex_cli_06_high_availability.md)

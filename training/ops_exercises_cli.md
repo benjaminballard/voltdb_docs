@@ -2,12 +2,23 @@
 
 The following exercises use the command line interface to perform typical operations on a VoltDB database.  Unless specified otherwise, these commands will work on Community Edition or Enterprise Edition.
 
-The commands can and should be organized into scripts to simplify and standardize the process of database operations.  Example scripts will be used in this exercise, and are also available for download.
+The commands can and should be organized into scripts to simplify and standardize the process of database operations.  The exercises will include some basic example scripts, but ultimately it is up to you how you want to write scripts to automate operations.
 
-Before getting started, create a directory for your scripts.  Since we'll be using application files that are provided in the examples/voter folder, it's convenient to create a directory under the examples folder, like this:
+## Initial Setup ##
+Before getting started with these exercises, you must install VoltDB, which was covered in an [earlier section](at02_installation.md).  You can install VoltDB into any folder you wish.  The examples will assume it is installed at ~/voltdb, but the script examples are easy to modify for any other location.
 
-    mkdir ~/voltdb/examples/scripts
+It is convenient to add the bin directory to your PATH so that VoltDB binaries can be executed without a full path.  You can do this many ways, such as adding the following line to your .profile or .bashrc file:
 
+     PATH="$PATH:~/voltdb/bin"
+
+We should create a folder that we will work in when writing and running the example scripts.
+
+    mkdir ~/voltdb_scripts
+    
+Optionally, if you want to practice these exercises with your own application, you should have a folder for that.  The examples will use the voter example which is provided with VoltDB.
+
+    mkdir ~/my_voltdb_app
+    
 ## Contents ##
 
 - [Starting and stopping a cluster](ex_cli_01_starting.md)

@@ -59,4 +59,4 @@ One thing to be careful about is keeping track of the correct catalog files.  On
 
 -------------------------
 
-Next: [Planned Maintenance Window](ex_cli_05_maintenance.md)
+[CLI Exercises](ops_exercises_cli.md) | Next: [Planned Maintenance Window](ex_cli_05_maintenance.md)

@@ -7,7 +7,6 @@ Start the database (the voter demo) manually using the start.sh script.
 
 In order to prove we have persisted data, we first need to add some data.  We can do this using sqlcmd:
 
-    cd ~/voltdb/bin
     sqlcmd
     1> INSERT INTO contestants (contestant_number,contestant_name) VALUES (100,'Homer Simpson');
     (1 row(s) affected)
@@ -18,13 +17,12 @@ You can verify that the data was inserted by querying the contestants table from
     
 Now let's prepare a directory for a snapshot.  Open a new terminal window:
 
-    cd ~/voltdb/examples/scripts
-    mkdir snapshots
+    mkdir ~/voltdb_snapshots
 
 Next, we will take a snapshot of the database.  But first, we should take other users into consideration.  In a real world situation, we aren't the only ones who may be interacting with the database.  If we did nothing to prevent other users from modifying data during or after the snapshot, their changes would be lost.  To take a snapshot that we know contains the very latest data, we first need to pause the database to put it into administrative mode, preventing users from making any further changes.  Then, we can take the snapshot.  We're going to put the snapshot in the "snapshots" directory we just created.  This can contain multiple snapshots.  We're going to call this one "snapshot_01".  
 
     3> exec @Pause;
-    4> exec @SnapshotSave ~/voltdb/examples/scripts/snapshots snapshot_01 0;
+    4> exec @SnapshotSave ~/voltdb_snapshots snapshot_01 0;
 
 The final "0" parameter in the last command means this snapshot will be taken asynchronously without blocking any new transactions.  We could have used 1 to make it block, but we already paused the database so we know no other transactions are taking place.  When you take a snapshot to a running database for backup purposes, you don't want to block incoming transactions, so we are using the 0 parameter since it is the most typical use.
 
@@ -65,4 +63,4 @@ Once the snapshot is successfully loaded, verify that the data has been restored
 
 -----------------------------
 
-Next: [Command Logging](ex_cli_03_commandlogging.md)
+[CLI Exercises](ops_exercises_cli.md) | Next: [Command Logging](ex_cli_03_commandlogging.md)

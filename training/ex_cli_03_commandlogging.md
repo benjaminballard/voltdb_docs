@@ -81,4 +81,4 @@ It is important to note that command logging provides durability for recovery pu
 
 ---------------------------------
 
-Next: [Live Catalog Update](ex_cli_04_liveupdate.md)
+[CLI Exercises](ops_exercises_cli.md) | Next: [Live Catalog Update](ex_cli_04_liveupdate.md)

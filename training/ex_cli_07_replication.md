@@ -58,3 +58,8 @@ The following process can be used for a more orderly stop to replication, althou
     cd ~/voltdb/bin
     sqlcmd
     1> exec @Promote;
+
+
+--------------
+
+[CLI Exercises](ops_exercises_cli.md) | Next: [Upgrading VoltDB](ex_cli_08_upgrade.md)

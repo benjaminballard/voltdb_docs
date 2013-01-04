@@ -44,4 +44,4 @@ To rejoin the failed node, we will restart the database process on that server, 
 
 ---------------------
 
-Next: [Database Replication and failover](ex_cli_07_replication.md)
+[CLI Exercises](ops_exercises_cli.md) | Next: [Database Replication and failover](ex_cli_07_replication.md)
