@@ -15,7 +15,7 @@ We should create a folder that we will work in when writing and running the exam
 
     mkdir ~/voltdb_scripts
     
-Optionally, if you want to practice these exercises with your own application, you should have a folder for that.  The examples will use the voter example which is provided with VoltDB.
+Optionally, if you want to practice these exercises with your own application, you should have a folder for that.  The examples will use the voter example which is provided with VoltDB (~/voltdb/examples/voter).
 
     mkdir ~/my_voltdb_app
     

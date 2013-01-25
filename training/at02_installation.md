@@ -25,8 +25,19 @@ The simplest and most typical way to install VoltDB is install it under the HOME
 For production use, VoltDB is often installed into a standard folder for software such as /opt/voltdb.
 
     sudo tar -xzvf voltdb-ent-2.8.4.tar.gz -C /opt
+
+
+VoltDB extracts to a folder that contains the version number, but we probably don't want to have to remember this version whenever we're going to use it, or update scripts that automate operations with VoltDB every time we upgrade.
+
+One way to solve this is to rename the folder.
+
     cd /opt
-    sudo mv voltdb-ent-2.8.4 voltdb
+    nsudo mv voltdb-ent-2.8.4 voltdb
+    
+Another way that might be even better is to instead add a symbolic link, so we keep the folder with the version number, and we have a link we can update when we install a new version.
+
+    cd /opt
+    ln -s voltdb-ent-2.8.4 voltdb
 
 ### Installing using the Debian package ###
 VoltDB Community Edition is also available as a [Debian package] (http://community.voltdb.com/downloads), so for Debian-based systems such as Ubuntu it can be installed using the dpkg command:

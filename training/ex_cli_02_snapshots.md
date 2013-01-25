@@ -24,7 +24,7 @@ Now let's prepare a directory for a snapshot.  Open a new terminal window:
 Next, we will take a snapshot of the database.  But first, we should take other users into consideration.  In a real world situation, we aren't the only ones who may be interacting with the database.  If we did nothing to prevent other users from modifying data during or after the snapshot, their changes would be lost.  To take a snapshot that we know contains the very latest data, we first need to pause the database to put it into administrative mode, preventing users from making any further changes.  Then, we can take the snapshot.  We're going to put the snapshot in the "snapshots" directory we just created.  This can contain multiple snapshots.  We're going to call this one "snapshot_01".  
 
     3> exec @Pause;
-    4> exec @SnapshotSave ~/voltdb_snapshots snapshot_01 1;
+    4> exec @SnapshotSave /home/username/voltdb_snapshots snapshot_01 1;
 
 The final "0" parameter in the last command means this snapshot will block any new transactions, but this is not a problem because we already paused the database.  To take a snapshot while the database is running for backup purposes, set this value to 0. 
 
@@ -53,7 +53,7 @@ Once the database is restarted, open a new sqlcmd console and verify that there 
 
 It should have zero votes.  Now, use the following command to reload the snapshot that was taken earlier:
 
-    2> exec @SnapshotRestore /voltdb/examples/scripts/shapshots snapshot_01;
+    2> exec @SnapshotRestore /home/username/voltdb_shapshots snapshot_01;
     
 Once the snapshot is successfully loaded, verify that the data has been restored:
 

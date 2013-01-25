@@ -94,18 +94,17 @@ Go to the terminal window where you ran the "./run.sh server" command, where Vol
 
     VOLTDB_HOME=`cd ~/voltdb-* && pwd`
     PATH=$PATH:$VOLTDB_HOME/bin
-    voltdb start catalog voter.jar deployment deployment.xml \
+    voltdb create catalog voter.jar deployment deployment.xml \
         license $VOLTDB_HOME/voltdb/license.xml host localhost
 
 The voltdb command uses the following structure:
 
-    voltdb [create|recover|start] catalog [catalog file] deployment [deployment file] \
+    voltdb [create|recover] catalog [catalog file] deployment [deployment file] \
         license [license file] host [hostname of leader]
 
 - action
     - create: Start the database with empty tables
     - recover: Start the database and recover (load) the data that was persisted when the dataabase was last running.
-    - start: If data was persisted, perform the "recover" action, otherwise perform the "create" action.
 - catalog: The pre-compiled .jar file that contains the schema and stored procedures for the database.
 - deployment: A configuration file that contains settings that enable or disable various database features and configure parameters for them such as paths and ports to be used.
 - license: a valid license .xml file

@@ -40,7 +40,7 @@ create.sh:
 
 Start the database again, using the create.sh script to test it.  You should see the same results.
 
-Use ctrl-C to stop the dataabase.  Now let's modify the create.sh script so that it runs VoltDB as a background process.
+Use ctrl-C to stop the database.  Now let's modify the create.sh script so that it runs VoltDB as a background process.
 
 create.sh:
 
