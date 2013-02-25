@@ -67,9 +67,7 @@ Follow these steps to test command log recovery:
 
 4) In sqlcmd, stop the database:
 
-    sqlcmd
-    1> exec @Shutdown;
-    2> exit
+    voltadmin shutdown
 
 5) Restart the database using the recover.sh script.
 

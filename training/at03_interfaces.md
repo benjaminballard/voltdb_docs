@@ -3,7 +3,7 @@
 ### Start the database ###
 Open a terminal window and run the following commands:
 
-    cd ~/voltdb-2.8.4
+    cd ~/voltdb-3.0
     cd examples/voter
 
 Compile the catalog
@@ -99,12 +99,14 @@ Go to the terminal window where you ran the "./run.sh server" command, where Vol
 
 The voltdb command uses the following structure:
 
-    voltdb [create|recover] catalog [catalog file] deployment [deployment file] \
+    voltdb [create|recover|rejoin] catalog [catalog file] deployment [deployment file] \
         license [license file] host [hostname of leader]
 
 - action
     - create: Start the database with empty tables
     - recover: Start the database and recover (load) the data that was persisted when the dataabase was last running.
+    - rejoin: Start the database and rejoin the cluster (which will pause) by connecting to the provided host.
+    - live rejoin: Start the database and rejoin the cluster (no pause) by connecting to the provided host.
 - catalog: The pre-compiled .jar file that contains the schema and stored procedures for the database.
 - deployment: A configuration file that contains settings that enable or disable various database features and configure parameters for them such as paths and ports to be used.
 - license: a valid license .xml file

@@ -30,25 +30,21 @@ The following process can be used for a more orderly stop to replication.
 
 1) Pause the master database (on Server A)
 
-    sqlcmd --servers=serverA --port=21211
-    1> exec @Pause;
+    voltadmin --host=serverA pause
 
 2) Shutdown the replica (on Server B)
 
-    sqlcmd --servers=serverB --port=21211
-    1> exec @Shutdown;
+    voltadmin --host=serverB shutdown
 
 3) Resume the master database (on Server A)
 
-    sqlcmd --servers=serverA --port=21211
-    1> exec @Resume;
+    voltadmin --host=serverA resume
 
 ## Promoting the Replica when the Master becomes unavailable ##
 
 In the event of a loss of availability of the Master cluster, you can promote the replica cluster and make it the new master using the following command.
 
-    sqlcmd --servers=serverB --port=21211
-    1> exec @Promote;
+    voltadmin --host=serverB promote
 
 The DR agent process won't be able to continue, so it can be stopped.
 

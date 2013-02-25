@@ -19,12 +19,12 @@ The following sections provide a quick summary of the installation process.  Rea
 ### Installing to the home directory ###
 The simplest and most typical way to install VoltDB is install it under the HOME directory of your user account.  This is easy for development and gives you full access to the software without requiring root permission.  This can be done easily with the following command:
 
-    tar -xzvf voltdb-ent-2.8.4.tar.gz -C $HOME
+    tar -xzvf voltdb-ent-3.0.tar.gz -C $HOME
     
 ### Installing to a standard directory ###
 For production use, VoltDB is often installed into a standard folder for software such as /opt/voltdb.
 
-    sudo tar -xzvf voltdb-ent-2.8.4.tar.gz -C /opt
+    sudo tar -xzvf voltdb-ent-3.0.tar.gz -C /opt
 
 
 VoltDB extracts to a folder that contains the version number, but we probably don't want to have to remember this version whenever we're going to use it, or update scripts that automate operations with VoltDB every time we upgrade.
@@ -32,17 +32,23 @@ VoltDB extracts to a folder that contains the version number, but we probably do
 One way to solve this is to rename the folder.
 
     cd /opt
-    nsudo mv voltdb-ent-2.8.4 voltdb
+    sudo mv voltdb-ent-3.0 voltdb
     
 Another way that might be even better is to instead add a symbolic link, so we keep the folder with the version number, and we have a link we can update when we install a new version.
 
     cd /opt
-    ln -s voltdb-ent-2.8.4 voltdb
+    ln -s voltdb-ent-3.0 voltdb
 
 ### Installing using the Debian package ###
 VoltDB Community Edition is also available as a [Debian package] (http://community.voltdb.com/downloads), so for Debian-based systems such as Ubuntu it can be installed using the dpkg command:
 
-    sudo dpkg -i voltdb_2.8.4_amd64.deb
+    sudo dpkg -i voltdb_3.0-1_amd64.deb
+
+Note: if you install the debian package, you should not install another veresion of VoltDB using the tarball method above.  The script that starts VoltDB will check if the debian package is installed and it would use that version rather than the version in the local directory.
+
+If you need to uninstall the debian package, use the following command:
+
+    sudo dpkg -r voltdb_3.0-1
 
 ## Post-installation Setup ##
 

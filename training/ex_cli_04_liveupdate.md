@@ -27,31 +27,19 @@ Next, we will use the provided run.sh script to recompile the catalog file.
 To recompile the catalog manually, you could use the following commands:
 
     cd ~/voltdb/examples/voter
-    ~/voltdb/bin/voltcompiler obj project.xml voter.jar
+    voltdb compile --classpath obj -o voter.jar ddl.sql
 
-Now, we can use the @UpdateApplicationCatalog procedure to update the catalog on our running database.
+The new voter.jar file can now be applied to our running database.
 
-    cd ~/voltdb/bin
-    sqlcmd
-    SQL Command :: localhost:21212
-    1> exec @UpdateApplicationCatalog ~/voltdb/examples/voter/voter.jar ~/voltdb/examples/voter/deployment.xml;
+    voltadmin update ~/voltdb/examples/voter/voter.jar ~/voltdb/examples/voter/deployment.xml
 
-If the command is successful, you will see the following output:
-
-    STATUS 
-    -------
-    0
-
-    (1 row(s) affected)
-
-If you are trying to make an unsupported online change, the @UpdateApplicationCatalog procedure will detect this and the operation will fail with an error message.
+If you are trying to make an unsupported online change, the operation will fail with an error message.
 
     The requested catalog change is not a supported change at this time.  
     May not ... (details of unsupported change)
 
 Once the catalog is updated, you can verify that the table is there.  If the table is missing, you should get an error.
 
-    cd ~/voltdb/bin
     sqlcmd
     1> SELECT * FROM contestant_info;
 

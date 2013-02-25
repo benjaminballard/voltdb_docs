@@ -52,14 +52,9 @@ create.sh:
 
 ## Stopping the Database ##
 
-Up until now we have been running the database on the console and stopping it by using Ctrl-C to kill the current process.  But running VoltDB in the console is normally something you do only during development or testing.  The last change we made to the create.sh script used nohup to run the database process in the background.  So there is a system procedure called @Shutdown that we can call through sqlcmod.  Because we are performing administrative action rather than simply running a query, we should connect to the admin port.
+Up until now we have been running the database on the console and stopping it by using Ctrl-C to kill the current process.  This may be a good way to run VoltDB during development or testing.  The last change we made to the create.sh script used nohup to run the database process in the background.  To stop the database, we use the voltadmin command line tool.  
 
-    sqlcmd --port=21211
-    1> exec @Shutdown;
-
-You should see the message "Connection to database host (localhost/127.0.0.1:21212) was lost before a response was received".  This is normal, because the request was to Shutdown, and the database shut itself down before sending a response, so the connection was severed before a response was sent back to sqlcmd.  You can then exit sqlcmd.
-
-    exit
+    voltadmin shutdown
 
 
 --------------

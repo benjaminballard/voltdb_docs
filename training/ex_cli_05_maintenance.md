@@ -18,19 +18,23 @@ Prerequisite: you should already have the following line in the deployment.xml f
 
 1) Pause the database (disconnect users)
 
-    echo "exec @Pause;" | sqlcmd --servers=localhost --port=21211
+    voltadmin pause
     
 2) Take a manual snapshot
 
-    echo "exec @SnapshotSave /path/to/save/dir snapshot_name 1;" | sqlcmd --servers=localhost --port=21211
+    voltadmin save /path/to/save/dir snapshot_name
 
-3) Shut down the database
+3) Verify snapshot succeeded
 
-    echo "exec @Shutdown;" | sqlcmd --servers=localhost --port=21211
+    voltadmin show snapshots
 
-4) Make changes (update the catalog or deployment files)
+4) Shut down the database
 
-5) Restart the database in admin mode (using the create.sh script)
+    voltadmin shutdown
+
+5) Make changes (update the catalog or deployment files)
+
+6) Restart the database in admin mode (using the create.sh script)
 
     ./create.sh
     
@@ -40,14 +44,13 @@ Prerequisite: you should already have the following line in the deployment.xml f
     nohup voltdb create catalog $VOLTDB_HOME/examples/voter/voter.jar deployment $VOLTDB_HOME/examples/voter/deployment.xml \
         license $VOLTDB_HOME/voltdb/license.xml host localhost > /dev/null 2>&1 &
 
-6) Reload the data from the snapshot
+7) Reload the data from the snapshot
 
-    echo "exec @SnapshotRestore  /path/to/save/dir snapshot_name;" | sqlcmd --servers=localhost --port=21211    
+    voltadmin restore /path/to/save/dir snapshot_name
 
-7) Resume the database (allow users to connect)
+8) Resume the database (allow users to connect)
 
-    echo "exec @Resume;" | sqlcmd --servers=localhost --port=21211
-
+    voltadmin resume
 
 ------------------
 

@@ -14,9 +14,10 @@ This is technical training focused on the administration of VoltDB clusters.  It
 2. [Installation](at02_installation.md)
 3. [Hands on with VoltDB Interfaces](at03_interfaces.md)
 4. [Ops Exercises - Command Line Interface](ops_exercises_cli.md)
+<!--
 5. Ops Exercises - VoltDB Enterprise Manager
-
-
+6. [Planning for Production deployment](planning.md)
+-->
 
 -----------------------------------------
 

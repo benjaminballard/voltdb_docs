@@ -94,7 +94,7 @@ VoltDB Enterprise Edition shares virtually all of the same code as VoltDB Commun
 
 Both editions of VoltDB can be administered from the command line interface.  There are no actions or tasks that can be performed in VoltDB Enterprise Manager that cannot be done alternatively from the command line.  
 
-You can choose the interface that is most comfortable for you to use, or that offers the level of control, ease of use, or customization that you most prefer.  However, VoltDB Enterprise Manager is not currently able to connect to or control a cluster that was started from the command line, so whichever interface you choose should be used consistently.  The exercises later in this tutorial are in two separate tracks, for command line interface and VoltDB Enterprise Manager.
+You can choose the interface that is most comfortable for you to use, or that offers the level of control, ease of use, or customization that you most prefer.  However, VoltDB Enterprise Manager is not currently able to connect to or control a cluster that was started from the command line, so whichever interface you choose should be used consistently.  The exercises in this tutorial are for command line interface.  Read the [Management Guide](http://voltdb.com/docs/MgtGuide/) for instructions on using VoltDB Enterprise Manager.
 
 -----------------------------------------------
 Next: [Installation](at02_installation.md)
