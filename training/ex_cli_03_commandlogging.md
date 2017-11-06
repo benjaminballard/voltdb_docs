@@ -9,7 +9,7 @@ To enable command logging with default settings, you can simply add the "command
     <deployment>
         <cluster hostcount="1" sitesperhost="2" kfactor="0" />
         <commandlog enabled="true"/>
-    </deployment
+    </deployment>
 
 By simply enabling the commandlog, it will use the default settings which include asynchronous logging, a logsize of 1GB, and the default voltdbroot directory will be used for both the command log and command log snapshot paths.  The following example is more explicit and shows how to set the optional configurations for command logging.
 
